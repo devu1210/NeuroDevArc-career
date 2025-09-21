@@ -1,35 +1,32 @@
 # backend/career_recommender.py
-import os, json
-
-def load_careers():
-    base_path = os.path.dirname(os.path.dirname(__file__))  # go up from backend/
-    data_path = os.path.join(base_path, "data", "skills.json")
-    with open(data_path, "r") as f:
-        return json.load(f)
-
-
-def load_careers():
-    """Load career data from JSON file"""
-    with open("data/skills.json", "r") as f:
-        return json.load(f)
-
-def get_career_advice(career_goal: str):
-    """Return career details if available"""
-    data = load_careers()
-    key = career_goal.lower()
-    return data.get(key, None)
-
+import os
+import json
 from pathlib import Path
 
-
 def load_careers():
-    # Path relative to this file
-    current_dir = Path(__file__).parent
+    """
+    Load career data from JSON file.
+    Works regardless of where the app.py is located.
+    """
+    # Get path relative to this file (career_recommender.py)
+    current_dir = Path(__file__).parent.parent  # go up from backend/ to root
     skills_file = current_dir / "data" / "skills.json"
-    
+
+    # Check if file exists
+    if not skills_file.exists():
+        raise FileNotFoundError(f"⚠️ skills.json not found at {skills_file}")
+
+    # Load JSON data
     with open(skills_file, "r") as f:
         data = json.load(f)
     return data
 
 
-
+def get_career_advice(career_goal: str):
+    """
+    Return career details if available.
+    career_goal: string (e.g., "data scientist")
+    """
+    data = load_careers()
+    key = career_goal.strip().lower()
+    return data.get(key, None)
