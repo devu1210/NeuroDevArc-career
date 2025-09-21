@@ -6,6 +6,7 @@ import base64
 
 
 from pathlib import Path
+from backend.career_recommender import get_career_advice
 
 
 # Add backend folder to sys.path
@@ -231,6 +232,7 @@ if st.button("🔍 Get Career Advice"):
             st.error("❌ Sorry, this career isn’t in the database yet. Try Data Scientist, Web Developer, or UX Designer.")
 
 st.markdown('</div>', unsafe_allow_html=True)
+
 
 
 
